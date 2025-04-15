@@ -7,7 +7,8 @@ const messages = [
 ]
 
 function App() {
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(1);
+  const [isOpen, isOpenSet] = useState(true);
 
   function previous() {
     setCount(count == 1 ? count : count-1)
@@ -18,20 +19,23 @@ function App() {
   }
 
   return (
-    <div className="steps">
-      <div className="numbers">
-        <div className={count >= 1 ? 'active' : 'not-active'}>1</div>
-        <div className={count >= 2 ? 'active' : 'not-active'}>2</div>
-        <div className={count >= 3 ? 'active' : 'not-active'}>3</div>
-      </div>
+    <>
+        <button onClick={() => isOpenSet(!isOpen)}>&times;</button>
 
-      <p>Step {count}: {messages[count-1]}</p>
-
-      <div className="buttons">
-        <button style={{backgroundColor: '#7950f2', color: '#fff'}} onClick={previous}>Previous</button>
-        <button style={{backgroundColor: '#7950f2', color: '#fff'}} onClick={next}>Next</button>
-      </div>
-    </div>
+      {isOpen && (
+        <div className="steps">
+        <div className="numbers">
+          <div className={count >= 1 ? 'active' : 'not-active'}>1</div>
+          <div className={count >= 2 ? 'active' : 'not-active'}>2</div>
+          <div className={count >= 3 ? 'active' : 'not-active'}>3</div>
+        </div>
+        <p>Step {count}: {messages[count-1]}</p>
+        <div className="buttons">
+          <button style={{backgroundColor: '#7950f2', color: '#fff'}} onClick={previous}>Previous</button>
+          <button style={{backgroundColor: '#7950f2', color: '#fff'}} onClick={next}>Next</button>
+        </div>
+      </div>)}
+    </>
   )
 }
 
