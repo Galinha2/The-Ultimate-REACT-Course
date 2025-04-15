@@ -8,12 +8,13 @@ function App() {
 
   function dateHandler() {
     const date = new Date()
+    date.setDate(date.getDate() + count)
     console.log(date)
     return(
       <div>
         {count >= 0 ?
-        <h1>hi</h1> :
-        <h1>bYE</h1>
+        <h1>{count} days from now is {date.toDateString()}</h1> :
+        <h1>{Math.abs(count)} days ago was {date.toDateString()}</h1>
       }
       </div>
     )
@@ -22,14 +23,14 @@ function App() {
   return (
     <>
       <div className='buttonsFrame'>
-        <button onClick={() => setStep(step - 1)}>-</button>
+        <button onClick={() => setStep((s) => s - 1)}>-</button>
         <p>Step: {step}</p>
-        <button onClick={() => setStep(step +1)}>+</button>
+        <button onClick={() => setStep((s) => s + 1)}>+</button>
       </div>
       <div className='buttonsFrame'>
-        <button onClick={() => setCount(count-step)}>-</button>
+        <button onClick={() => setCount((c) => c -step)}>-</button>
         <p>Count: {count}</p>
-        <button onClick={() => setCount(count+step)}>+</button>
+        <button onClick={() => setCount((c) => c +step)}>+</button>
       </div>
       <p>{dateHandler()}</p>
     </>
