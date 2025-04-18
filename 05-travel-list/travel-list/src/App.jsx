@@ -121,6 +121,6 @@ function Stats({items}) {
       <em>🧳 You have {numItems} items on your list, and you already packed {numPacked})</em>
     </footer>
   );
-}
+};
 
 export default App;
