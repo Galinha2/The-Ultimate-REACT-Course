@@ -5,11 +5,11 @@ function App() {
 
   function handleDelete(id) {
     setItems((items) => items.filter((item) => item.id !== id));
-  }
+  };
 
   function sendItems(item) {
     setItems((items) => [...items, item]);
-  }
+  };
 
   function handleOnToggle(id) {
     setItems((items) =>
@@ -17,7 +17,7 @@ function App() {
         item.id === id ? { ...item, packed: !item.packed } : item
       )
     );
-  }
+  };
 
   return (
     <div className="app">
@@ -31,11 +31,11 @@ function App() {
       <Stats items={items} />
     </div>
   );
-}
+};
 
 function Logo() {
   return <h1>🏝️ Far Away 🧳</h1>;
-}
+};
 
 function Form({ onAddItems }) {
   const [text, setText] = useState("");
@@ -76,7 +76,7 @@ function Form({ onAddItems }) {
       <button>Add</button>
     </form>
   );
-}
+};
 
 function PackingList({ itemsSend, onDelete, onToggle }) {
   console.log(itemsSend.packed)
@@ -94,7 +94,7 @@ function PackingList({ itemsSend, onDelete, onToggle }) {
       </ul>
     </div>
   );
-}
+};
 
 function Item({ item, onDelete, onToggle }) {
 
@@ -111,7 +111,7 @@ function Item({ item, onDelete, onToggle }) {
       <button onClick={() => onDelete(item.id)}>❌</button>
     </li>
   );
-}
+};
 
 function Stats({items}) {
   const numItems = items.length;
