@@ -5,11 +5,16 @@ function App() {
 
   function handleDelete(id) {
     setItems((items) => items.filter((item) => item.id !== id));
-  };
+  }
 
   function sendItems(item) {
     setItems((items) => [...items, item]);
-  };
+  }
+
+  function clearList() {
+    const confirm = window.confirm('Are you sure you want to delete all list items?');
+    if(confirm)setItems([]);
+  }
 
   function handleOnToggle(id) {
     setItems((items) =>
@@ -17,7 +22,7 @@ function App() {
         item.id === id ? { ...item, packed: !item.packed } : item
       )
     );
-  };
+  }
 
   return (
     <div className="app">
@@ -27,20 +32,21 @@ function App() {
         itemsSend={items}
         onDelete={handleDelete}
         onToggle={handleOnToggle}
+        onClearList={clearList}
       />
       <Stats items={items} />
     </div>
   );
-};
+}
 
 function Logo() {
   return <h1>🏝️ Far Away 🧳</h1>;
-};
+}
 
 function Form({ onAddItems }) {
   const [text, setText] = useState("");
   const [select, setSelect] = useState(1);
-  
+
   function handleSubmit(event) {
     event.preventDefault();
     if (!text) return;
@@ -50,7 +56,7 @@ function Form({ onAddItems }) {
     setSelect(1);
     setText("");
   }
-  
+
   return (
     <form className="add-form" onSubmit={handleSubmit}>
       <h3>What do you need for your 😍 trip?</h3>
@@ -76,14 +82,26 @@ function Form({ onAddItems }) {
       <button>Add</button>
     </form>
   );
-};
+}
 
-function PackingList({ itemsSend, onDelete, onToggle }) {
-  console.log(itemsSend.packed)
+function PackingList({ itemsSend, onDelete, onToggle, onClearList }) {
+  const [sortBy, setSortBy] = useState("input");
+
+  let sortedItems;
+  if (sortBy === "input") sortedItems = itemsSend;
+  if (sortBy === "description")
+    sortedItems = itemsSend
+      .slice()
+      .sort((a, b) => a.text.localeCompare(b.text));
+  if (sortBy === "packed")
+    sortedItems = itemsSend
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+  console.log(itemsSend.packed);
   return (
     <div className="list">
       <ul>
-        {itemsSend.map((item) => (
+        {sortedItems.map((item) => (
           <Item
             item={item}
             onDelete={onDelete}
@@ -92,35 +110,46 @@ function PackingList({ itemsSend, onDelete, onToggle }) {
           />
         ))}
       </ul>
+
+      <div className="actions">
+        <select name={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">Sort by input order</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+        <button onClick={onClearList}>Clear List</button>
+      </div>
     </div>
   );
-};
+}
 
 function Item({ item, onDelete, onToggle }) {
-
-  return (  
+  return (
     <li>
       <input
         type="checkbox"
         value={item.packed}
         onChange={() => onToggle(item.id)}
       />
-      <span style={item.packed ? {textDecoration: 'line-through'} : {}}>
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.select} {item.text}
       </span>
       <button onClick={() => onDelete(item.id)}>❌</button>
     </li>
   );
-};
+}
 
-function Stats({items}) {
+function Stats({ items }) {
   const numItems = items.length;
   const numPacked = items.filter((item) => item.packed).length;
   return (
     <footer className="stats">
-      <em>🧳 You have {numItems} items on your list, and you already packed {numPacked})</em>
+      <em>
+        🧳 You have {numItems} items on your list, and you already packed{" "}
+        {numPacked})
+      </em>
     </footer>
   );
-};
+}
 
 export default App;
