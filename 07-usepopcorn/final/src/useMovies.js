@@ -1,26 +1,60 @@
-@media (max-width: 768px) {
-  .background {
-    /* transform: rotate(180deg); */
-  }
+import { useState, useEffect } from "react";
 
-  .home-header {
-    /* transform: rotate(180deg); */
-    /* Mantém o resto das propriedades CSS de .home-header aqui, sem a rotação */
-  }
-}
+const KEY = "f84fc31d";
 
-.login-body {
-  margin-top: 35px;
-}
+export function useMovies(query) {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-.login-body,
-.login-form,
-.img-logo,
-.img-login,
-.login-frame,
-.user-password,
-.user-input,
-.social-login,
-.remember-credentials {
-  transition: all 0.3s ease-in-out;
+  useEffect(
+    function () {
+      // callback?.();
+
+      const controller = new AbortController();
+
+      async function fetchMovies() {
+        try {
+          setIsLoading(true);
+          setError("");
+
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            { signal: controller.signal }
+          );
+
+          if (!res.ok)
+            throw new Error("Something went wrong with fetching movies");
+
+          const data = await res.json();
+          if (data.Response === "False") throw new Error("Movie not found");
+
+          setMovies(data.Search);
+          setError("");
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            console.log(err.message);
+            setError(err.message);
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovies();
+
+      return function () {
+        controller.abort();
+      };
+    },
+    [query]
+  );
+
+  return { movies, isLoading, error };
 }
