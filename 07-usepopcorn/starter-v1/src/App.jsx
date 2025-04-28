@@ -56,16 +56,45 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen1, setIsOpen1] = useState(true);
   const [isOpen2, setIsOpen2] = useState(true);
+  const [isLoadding, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
-  const KEY = 'ba45666d';
+  const KEY = "ba45666d";
 
   useEffect(function () {
-    fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`).then((res) => res.json()).then((data) => setMovies(data.Search));
-  }, []);
+    async function fetchMovies() {
+      try {
+        setError("");
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies");
+
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("Movie not found");
+        setMovies(data.Search);
+      } catch (err) {
+        console.error(err.message);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if(query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+    fetchMovies();
+  }, [query]);
 
   return (
     <>
@@ -94,10 +123,12 @@ export default function App() {
           >
             {isOpen1 ? "–" : "+"}
           </button>
-          {isOpen1 && (
+          {isLoadding && <Loading />}
+          {error && <ErrorMessage message={error} />}
+          {!isLoadding && !error && (
             <ul className="list">
               {movies?.map((movie) => (
-                <li key={movie.imdbID}>
+                <li key={movie.imdbID} onClick={() => setSelectedId(movie.imdbID)}>
                   <img src={movie.Poster} alt={`${movie.Title} poster`} />
                   <h3>{movie.Title}</h3>
                   <div>
@@ -170,5 +201,31 @@ export default function App() {
         </div>
       </main>
     </>
+  );
+}
+
+function Loading() {
+  return (
+    <div className="loader">
+      <h2>Loading...</h2>
+    </div>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <div className="error">
+      <h2>
+        {message} <span>📶</span>
+      </h2>
+    </div>
+  );
+}
+
+function SelectedID({ id }) {
+  return (
+    <div className="selected-id">
+      <h2>Selected ID: {id}</h2>
+    </div>
   );
 }
