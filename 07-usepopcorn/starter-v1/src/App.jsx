@@ -196,6 +196,18 @@ function SelectedID({ id, onCloseMovie }) {
     Genre: genre,
   } = movie;
 
+  useEffect(function () {
+    function callback(e) {
+      if (e.code === "Escape") {
+        onCloseMovie();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return function () {
+      document.removeEventListener("keydown", callback);
+    };
+  })
+
   useEffect(
     function () {
       setIsLoading(true);
