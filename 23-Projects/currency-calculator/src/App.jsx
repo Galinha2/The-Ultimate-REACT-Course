@@ -31,7 +31,7 @@ export default function App() {
   
   function tellValue() {
     return <p>{query <= 0 ? setQuery(0.01) : `${result} ${toCurrency}`}</p>;
-  }
+  };
 
   console.log(result);
 
