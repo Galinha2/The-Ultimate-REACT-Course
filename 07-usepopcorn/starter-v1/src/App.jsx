@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const tempMovieData = [
   {
@@ -72,6 +72,7 @@ export default function App() {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const inputRef = useRef(null);
 
   useEffect(
     function () {
@@ -106,6 +107,10 @@ export default function App() {
     [query]
   );
 
+  useEffect(function () {
+    inputRef.current.focus();
+  }, [])
+
   return (
     <>
       <nav className="nav-bar">
@@ -119,6 +124,7 @@ export default function App() {
           placeholder="Search movies..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          ref={inputRef}
         />
         <p className="num-results">
           Found <strong>{movies.length}</strong> results
