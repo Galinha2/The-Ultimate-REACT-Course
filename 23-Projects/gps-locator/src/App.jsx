@@ -34,4 +34,4 @@ export default function App() {
       <p>You requested position {countClicks} times</p>
     </div>
   );
-}
+};
