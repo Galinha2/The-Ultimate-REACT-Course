@@ -1,19 +1,53 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deposit } from "./accountSlice";
+import { withdraw } from "./accountSlice";
+import { requestLoan } from "./accountSlice";
+import { payLoan } from "./accountSlice";
 
-function AccountOperations() {
+export function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
   const [withdrawalAmount, setWithdrawalAmount] = useState("");
   const [loanAmount, setLoanAmount] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("USD");
 
-  function handleDeposit() {}
+  const dispatch = useDispatch();
+  const {
+    loan: currentLoan,
+    loanPurpose: currentLoanPurpose,
+    balance: currentBalance,
+  } = useSelector((state) => state.account);
+  const account = useSelector((state) => state.account);
+  console.log(account);
+  console.log(currentBalance);
 
-  function handleWithdrawal() {}
+  function handleDeposit() {
+    if (!depositAmount) return;
+    dispatch(deposit(depositAmount));
+    setDepositAmount("");
+  }
 
-  function handleRequestLoan() {}
+  function handleWithdrawal() {
+    if (!withdrawalAmount) return;
+    // LATER
+    dispatch(withdraw(withdrawalAmount));
+    setWithdrawalAmount("");
+  }
 
-  function handlePayLoan() {}
+  function handleRequestLoan() {
+    if(!loanAmount || !loanPurpose) return;
+    dispatch(requestLoan(loanAmount, loanPurpose));
+    setLoanPurpose("");
+    setLoanAmount("");
+  }
+
+  function handlePayLoan() {
+    if(!account.loan) return;
+    dispatch(payLoan());
+    setLoanAmount("");
+    setLoanPurpose("");
+  }
 
   return (
     <div>
@@ -67,7 +101,7 @@ function AccountOperations() {
         </div>
 
         <div>
-          <span>Pay back $X</span>
+          <span>Pay back {currentLoan}</span>
           <button onClick={handlePayLoan}>Pay loan</button>
         </div>
       </div>
