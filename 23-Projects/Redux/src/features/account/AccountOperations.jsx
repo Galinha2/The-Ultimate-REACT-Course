@@ -36,14 +36,14 @@ export function AccountOperations() {
   }
 
   function handleRequestLoan() {
-    if(!loanAmount || !loanPurpose) return;
+    if (!loanAmount || !loanPurpose) return;
     dispatch(requestLoan(loanAmount, loanPurpose));
     setLoanPurpose("");
     setLoanAmount("");
   }
 
   function handlePayLoan() {
-    if(!account.loan) return;
+    if (!account.loan) return;
     dispatch(payLoan());
     setLoanAmount("");
     setLoanPurpose("");

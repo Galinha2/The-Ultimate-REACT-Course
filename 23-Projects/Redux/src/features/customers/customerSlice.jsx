@@ -1,19 +1,22 @@
-
-
 const initialStateCostumer = {
-    fullName: "",
-    nationalID: '',
-    createdAt: new Date().toISOString(),
-}
+  fullName: "",
+  nationalID: "",
+  createdAt: new Date().toISOString(),
+};
 
 export default function customerReducer(state = initialStateCostumer, action) {
-    switch (action.type) {
-        case 'customer/createCustomer':
-            return { ...state, fullName: action.payload.fullName, nationalID: action.payload.nationalID };
-        case 'customer/updateName':
-            return { ...state, fullName: action.payload };
-        default: return state;
-    }
+  switch (action.type) {
+    case "customer/createCustomer":
+      return {
+        ...state,
+        fullName: action.payload.fullName,
+        nationalID: action.payload.nationalID,
+      };
+    case "customer/updateName":
+      return { ...state, fullName: action.payload };
+    default:
+      return state;
+  }
 }
 
 /*
@@ -28,19 +31,19 @@ console.log(store.getState());
 */
 
 export function createCustomer(fullName, nationalID) {
-    return {
-        type: 'customer/createCustomer',
-        payload: {
-            fullName,
-            nationalID
-        }
-    }
+  return {
+    type: "customer/createCustomer",
+    payload: {
+      fullName,
+      nationalID,
+    },
+  };
 }
 export function updateName(fullName) {
-    return {
-        type: 'customer/createCustomer',
-        payload: {
-            fullName
-        }
-    }
+  return {
+    type: "customer/updateName",
+    payload: {
+      fullName,
+    },
+  };
 }
