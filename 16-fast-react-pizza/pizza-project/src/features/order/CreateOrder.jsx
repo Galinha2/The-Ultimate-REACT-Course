@@ -1,4 +1,5 @@
 import { useState } from "react";
+import '../../../src/index.css';
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -35,13 +36,13 @@ function CreateOrder() {
   const cart = fakeCart;
 
   return (
-    <div>
+    <div className="flex flex-col gap-5 m-auto mt-10 max-w-100">
       <h2>Ready to order? Let's go!</h2>
 
       <form>
         <div>
           <label>First Name</label>
-          <input type="text" name="customer" required />
+          <input className="inputoo" type="text" name="customer" required />
         </div>
 
         <div>
@@ -59,18 +60,18 @@ function CreateOrder() {
         </div>
 
         <div>
-          <input
+          <input className=""
             type="checkbox"
             name="priority"
             id="priority"
             // value={withPriority}
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor="priority">Want to yo give your order priority?</label>
+          <label className="w-10 h-10 accent-yellow-500 ring-offset-2" htmlFor="priority">Want to yo give your order priority?</label>
         </div>
 
         <div>
-          <button>Order now</button>
+          <button className="p-1 px-4 text-white transition-colors duration-300 bg-orange-500 rounded-full cursor-pointer hover:bg-orange-600">Order now</button>
         </div>
       </form>
     </div>

@@ -11,7 +11,7 @@ function CreateUser() {
     <form onSubmit={handleSubmit}>
       <p>👋 Welcome! Please start by telling us your name:</p>
 
-      <input
+      <input className='w-40 md:w-60 py-1 bg-white rounded-[50px] text-center mt-5'
         type="text"
         placeholder="Your full name"
         value={username}
