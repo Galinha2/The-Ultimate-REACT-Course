@@ -61,15 +61,15 @@ function MainNav() {
         </li>
         <li className="sliderIcons">
           <span className="icons-slider"><HiOutlineHomeModern/></span>
-          <NavLink to="/bookings">Cabins</NavLink>
+          <NavLink to="/cabins">Cabins</NavLink>
         </li>
         <li className="sliderIcons">
           <span className="icons-slider"><HiOutlineUsers/></span>
-          <NavLink to="/bookings">Users</NavLink>
+          <NavLink to="/users">Users</NavLink>
         </li>
         <li className="sliderIcons">
           <span className="icons-slider"><HiOutlineCog6Tooth/></span>
-          <NavLink to="/bookings">Settings</NavLink>
+          <NavLink to="/settings">Settings</NavLink>
         </li>
       </NavList>
     </nav>
