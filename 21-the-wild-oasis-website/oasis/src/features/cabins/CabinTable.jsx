@@ -195,7 +195,7 @@ function CabinTable() {
           </p>
           <button className="h-10 p-0 px-5 m-0 text-sm rounded-full btn-blue" onClick={() => deleteMutation.mutate(cabin.id)}>Delete</button>
         </div>
-      ))}
+      ))};
     </Table>
   );
 }
